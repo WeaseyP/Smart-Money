@@ -1,0 +1,147 @@
+<?xml version="1.0" ?>
+<informationTable xsi:schemaLocation="http://www.sec.gov/edgar/document/thirteenf/informationtable eis_13FDocument.xsd" xmlns="http://www.sec.gov/edgar/document/thirteenf/informationtable" xmlns:n1="http://www.sec.gov/edgar/document/thirteenf/informationtable" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <infoTable>
+    <nameOfIssuer>ENHABIT INC</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>29332G102</cusip>
+    <value>28455577</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>2474398</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>2474398</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>FIDELITY NATL INFORMATION SV</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>31620M106</cusip>
+    <value>202087728</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>3694474</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>3694474</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>FRESHPET INC</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>358039105</cusip>
+    <value>282297655</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>4289586</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>4289586</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>LABORATORY CORP AMER HLDGS</nameOfIssuer>
+    <titleOfClass>COM NEW</titleOfClass>
+    <cusip>50540R409</cusip>
+    <value>96998974</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>401935</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>401935</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>LEIDOS HOLDINGS INC</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>525327102</cusip>
+    <value>28749806</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>324930</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>324930</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>MERCURY SYS INC</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>589378108</cusip>
+    <value>152010632</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>4394641</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>4394641</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>NEW RELIC INC</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>64829B100</cusip>
+    <value>210222335</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>3212444</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>3212444</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>SPDR S&amp;P 500 ETF TR</nameOfIssuer>
+    <titleOfClass>TR UNIT</titleOfClass>
+    <cusip>78462F103</cusip>
+    <value>98023836</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>221133</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>221133</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>TREEHOUSE FOODS INC</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>89469A104</cusip>
+    <value>239502187</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>4753914</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>4753914</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+</informationTable>
