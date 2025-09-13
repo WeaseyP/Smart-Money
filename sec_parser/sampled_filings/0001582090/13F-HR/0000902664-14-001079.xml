@@ -1,0 +1,147 @@
+<?xml version="1.0" ?>
+<informationTable xsi:schemaLocation="http://www.sec.gov/edgar/document/thirteenf/informationtable eis_13FDocument.xsd" xmlns="http://www.sec.gov/edgar/document/thirteenf/informationtable" xmlns:n1="http://www.sec.gov/edgar/document/thirteenf/informationtable" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <infoTable>
+    <nameOfIssuer>CHENIERE ENERGY INC</nameOfIssuer>
+    <titleOfClass>COM NEW</titleOfClass>
+    <cusip>16411R208</cusip>
+    <value>70717</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>1640000</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>1640000</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>COMCAST CORP NEW</nameOfIssuer>
+    <titleOfClass>CL A</titleOfClass>
+    <cusip>20030N101</cusip>
+    <value>47548</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>915000</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>915000</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>DOLLAR GEN CORP NEW</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>256677105</cusip>
+    <value>53986</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>895000</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>895000</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>DOLLAR TREE INC</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>256746108</cusip>
+    <value>35234</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>624500</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>624500</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>HELEN OF TROY CORP LTD</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>G4388N106</cusip>
+    <value>59256</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>1200000</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>1200000</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>JARDEN CORP</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>471109108</cusip>
+    <value>98160</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>1600000</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>1600000</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>LAMAR ADVERTISING CO</nameOfIssuer>
+    <titleOfClass>CL A</titleOfClass>
+    <cusip>512815101</cusip>
+    <value>45980</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>880000</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>880000</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>NEXSTAR BROADCASTING GROUP I</nameOfIssuer>
+    <titleOfClass>CL A</titleOfClass>
+    <cusip>65336K103</cusip>
+    <value>17806</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>319500</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>319500</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>VISTEON CORP</nameOfIssuer>
+    <titleOfClass>COM NEW</titleOfClass>
+    <cusip>92839U206</cusip>
+    <value>24378</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>297690</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>SOLE</investmentDiscretion>
+    <votingAuthority>
+      <Sole>297690</Sole>
+      <Shared>0</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+</informationTable>

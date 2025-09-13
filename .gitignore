@@ -1,7 +1,13 @@
 # Byte-compiled / optimized / DLL files
-__pycache__/
+**/__pycache__/
 *.py[codz]
 *$py.class
+
+
+# Data folders located inside the sec_parser directory
+sec_parser/fund_data/
+sec_parser/raw_filings/
+sec_parser/submissions/
 
 # C extensions
 *.so

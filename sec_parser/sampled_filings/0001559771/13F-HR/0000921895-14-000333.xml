@@ -1,0 +1,190 @@
+<?xml version="1.0" ?>
+<informationTable xsi:schemaLocation="http://www.sec.gov/edgar/document/thirteenf/informationtable eis_13FDocument.xsd" xmlns="http://www.sec.gov/edgar/document/thirteenf/informationtable" xmlns:n1="http://www.sec.gov/edgar/document/thirteenf/informationtable" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <infoTable>
+    <nameOfIssuer>ABERCROMBIE &amp; FITCH CO</nameOfIssuer>
+    <titleOfClass>CL A</titleOfClass>
+    <cusip>002896207</cusip>
+    <value>14551</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>442132</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>OTR</investmentDiscretion>
+    <otherManager>1, 2</otherManager>
+    <votingAuthority>
+      <Sole>0</Sole>
+      <Shared>442132</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>AEROVIRONMENT INC</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>008073108</cusip>
+    <value>16924</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>580767</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>OTR</investmentDiscretion>
+    <otherManager>1, 2</otherManager>
+    <votingAuthority>
+      <Sole>0</Sole>
+      <Shared>580767</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>LSB INDS INC</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>502160104</cusip>
+    <value>5813</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>141710</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>OTR</investmentDiscretion>
+    <otherManager>1, 2</otherManager>
+    <votingAuthority>
+      <Sole>0</Sole>
+      <Shared>141710</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>OSI SYSTEMS INC</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>671044105</cusip>
+    <value>4345</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>81818</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>OTR</investmentDiscretion>
+    <otherManager>1, 2</otherManager>
+    <votingAuthority>
+      <Sole>0</Sole>
+      <Shared>81818</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>PAREXEL INTL CORP</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>699462107</cusip>
+    <value>5084</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>112521</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>OTR</investmentDiscretion>
+    <otherManager>1, 2</otherManager>
+    <votingAuthority>
+      <Sole>0</Sole>
+      <Shared>112521</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>ROVI CORP</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>779376102</cusip>
+    <value>11985</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>608690</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>OTR</investmentDiscretion>
+    <otherManager>1, 2</otherManager>
+    <votingAuthority>
+      <Sole>0</Sole>
+      <Shared>608690</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>RENTECH INC</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>760112102</cusip>
+    <value>14885</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>8505642</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>OTR</investmentDiscretion>
+    <otherManager>1, 2</otherManager>
+    <votingAuthority>
+      <Sole>0</Sole>
+      <Shared>8505642</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>TIMKEN CO</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>887389104</cusip>
+    <value>9264</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>168228</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>OTR</investmentDiscretion>
+    <otherManager>1, 2</otherManager>
+    <votingAuthority>
+      <Sole>0</Sole>
+      <Shared>168228</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>URS CORP NEW</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>903236107</cusip>
+    <value>2899</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>54700</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>OTR</investmentDiscretion>
+    <otherManager>1, 2</otherManager>
+    <votingAuthority>
+      <Sole>0</Sole>
+      <Shared>54700</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>UTI WORLDWIDE INC</nameOfIssuer>
+    <titleOfClass>ORD</titleOfClass>
+    <cusip>G87210103</cusip>
+    <value>3144</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>179021</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>OTR</investmentDiscretion>
+    <otherManager>1, 2</otherManager>
+    <votingAuthority>
+      <Sole>0</Sole>
+      <Shared>179021</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+  <infoTable>
+    <nameOfIssuer>VOLCANO CORPORATION</nameOfIssuer>
+    <titleOfClass>COM</titleOfClass>
+    <cusip>928645100</cusip>
+    <value>51837</value>
+    <shrsOrPrnAmt>
+      <sshPrnamt>2372403</sshPrnamt>
+      <sshPrnamtType>SH</sshPrnamtType>
+    </shrsOrPrnAmt>
+    <investmentDiscretion>OTR</investmentDiscretion>
+    <otherManager>1, 2</otherManager>
+    <votingAuthority>
+      <Sole>0</Sole>
+      <Shared>2372403</Shared>
+      <None>0</None>
+    </votingAuthority>
+  </infoTable>
+</informationTable>
