@@ -1,146 +1,156 @@
-from lxml import etree
+from lxml import etree, html
 import re
+from typing import List, Dict, Any, Optional
 
-def parse_form4_xml(xml_content: str) -> list[dict]:
-    """
-    Parses the XML content of a Form 4 filing.
-    """
-    try:
-        # Remove namespaces for easier parsing
-        xml_content = re.sub(r'\sxmlns="[^"]+"', '', xml_content, count=1)
-        root = etree.fromstring(xml_content.encode('utf-8'))
-    except etree.XMLSyntaxError as e:
-        raise ValueError(f"Failed to parse Form 4 XML: {e}")
+# --- Helper Functions ---
+def _clean_value(value: Optional[str]) -> Optional[str]:
+    if not value: return None
+    return re.sub(r'[$,]', '', value).strip()
 
-    transactions = []
-    
-    # Common data (issuer and owner)
-    issuer_cik = root.findtext('.//issuer/issuerCik', default='').strip()
-    issuer_name = root.findtext('.//issuer/issuerName', default='').strip()
-    issuer_ticker = root.findtext('.//issuer/issuerTradingSymbol', default='').strip()
-    
-    owner_cik = root.findtext('.//reportingOwner/reportingOwnerId/rptOwnerCik', default='').strip()
-    owner_name = root.findtext('.//reportingOwner/reportingOwnerId/rptOwnerName', default='').strip()
-    
-    # Extract relationship details
-    relationship_node = root.find('.//reportingOwner/reportingOwnerRelationship')
-    is_director = relationship_node.findtext('isDirector', default='0').strip() == '1'
-    is_officer = relationship_node.findtext('isOfficer', default='0').strip() == '1'
-    is_ten_percent_owner = relationship_node.findtext('isTenPercentOwner', default='0').strip() == '1'
-    officer_title = relationship_node.findtext('officerTitle', default='').strip()
+# --- 13F-HR Parser ---
 
-    # Process non-derivative transactions
-    for transaction in root.findall('.//nonDerivativeTransaction'):
-        data = {
-            'issuer_cik': issuer_cik,
-            'issuer_name': issuer_name,
-            'issuer_ticker': issuer_ticker,
-            'reporting_owner_cik': owner_cik,
-            'reporting_owner_name': owner_name,
-            'is_director': is_director,
-            'is_officer': is_officer,
-            'is_ten_percent_owner': is_ten_percent_owner,
-            'officer_title': officer_title,
-            'transaction_date': transaction.findtext('.//transactionDate/value', default='').strip(),
-            'transaction_code': transaction.findtext('.//transactionCoding/transactionCode', default='').strip(),
-            'shares_transacted': transaction.findtext('.//transactionAmounts/transactionShares/value', default='').strip(),
-            'price_per_share': transaction.findtext('.//transactionAmounts/transactionPricePerShare/value', default='').strip(),
-            'acquired_disposed_code': transaction.findtext('.//transactionAmounts/transactionAcquiredDisposedCode/value', default='').strip(),
-            'shares_owned_after': transaction.findtext('.//postTransactionAmounts/sharesOwnedFollowingTransaction/value', default='').strip(),
-        }
-        transactions.append(data)
+def _parse_13f_text_table(table_text: str) -> List[Dict[str, Any]]:
+    """Parses a pre-formatted text table using a CUSIP-anchored regex."""
+    holdings = []
+    lines = table_text.strip().split('\n')
+    
+    header_index = -1
+    for i, line in enumerate(lines):
+        upper_line = line.upper()
+        if 'CUSIP' in upper_line and ('VALUE' in upper_line or 'VOTING AUTHORITY' in upper_line):
+            header_index = i
+            break
+    
+    if header_index == -1: return []
+
+    # Regex to find a CUSIP and capture the text before and after.
+    # CUSIPs are 9 chars, but can sometimes be 8 in older filings.
+    cusip_regex = re.compile(r'\b([A-Z0-9]{8,9})\b')
+    
+    # Start parsing from the line after the identified header.
+    for line in lines[header_index + 1:]:
+        # Skip empty lines, separators, or lines that look like tags.
+        if not line.strip() or '---' in line or '<' in line: continue
+
+        match = cusip_regex.search(line)
+        if not match: continue
+            
+        cusip = match.group(1)
+        # The issuer/title is everything before the CUSIP.
+        issuer_and_title = line[:match.start()].strip()
+        # The rest of the data is after the CUSIP.
+        other_cols_str = line[match.end():].strip()
         
-    return transactions
+        # Split the remaining columns by multiple spaces.
+        other_cols = re.split(r'\s{2,}', other_cols_str)
+        
+        # We expect at least value and shares.
+        if len(other_cols) < 2: continue
+            
+        holding = {
+            'nameOfIssuer': issuer_and_title,
+            'cusip': cusip,
+            'value': _clean_value(other_cols[0]),
+            'sshPrnamt': _clean_value(other_cols[1]),
+        }
+        holdings.append(holding)
+            
+    return holdings
 
-def parse_13f_xml(xml_content: str) -> list[dict]:
-    """
-    Parses the XML content of a modern Form 13F filing (form13fInfoTable.xml).
-    """
+def _parse_13f_xml_infotable(xml_content: str) -> List[Dict[str, Any]]:
+    """Parses the modern form13fInfoTable.xml format."""
     try:
-        xml_content = re.sub(r'\sxmlns="[^"]+"', '', xml_content, count=1)
-        root = etree.fromstring(xml_content.encode('utf-8'))
-    except etree.XMLSyntaxError as e:
-        raise ValueError(f"Failed to parse 13F XML: {e}")
+        clean_xml = re.sub(r'\sxmlns="[^"]+"', '', xml_content, count=1)
+        root = etree.fromstring(clean_xml.encode('utf-8'))
+    except etree.XMLSyntaxError: return []
 
     holdings = []
     for info_table in root.findall('.//infoTable'):
         data = {
-            'name_of_issuer': info_table.findtext('nameOfIssuer', default='').strip(),
-            'title_of_class': info_table.findtext('titleOfClass', default='').strip(),
-            'cusip': info_table.findtext('cusip', default='').strip(),
-            'value_x1000': info_table.findtext('value', default='').strip(),
-            'shrs_or_prn_amt': info_table.findtext('.//shrsOrPrnAmt/sshPrnamt', default='').strip(),
-            'sh_prn_type': info_table.findtext('.//shrsOrPrnAmt/sshPrnamtType', default='').strip(),
-            'investment_discretion': info_table.findtext('investmentDiscretion', default='').strip(),
-            'voting_auth_sole': info_table.findtext('.//votingAuthority/Sole', default='').strip(),
-            'voting_auth_shared': info_table.findtext('.//votingAuthority/Shared', default='').strip(),
-            'voting_auth_none': info_table.findtext('.//votingAuthority/None', default='').strip(),
+            'nameOfIssuer': info_table.findtext('nameOfIssuer'),
+            'cusip': info_table.findtext('cusip'),
+            'value': _clean_value(info_table.findtext('value')),
+            'sshPrnamt': _clean_value(info_table.findtext('.//shrsOrPrnAmt/sshPrnamt')),
+            'sshPrnamtType': info_table.findtext('.//shrsOrPrnAmt/sshPrnamtType'),
         }
-        holdings.append(data)
-        
+        holdings.append({k: v.strip() if isinstance(v, str) else v for k, v in data.items()})
     return holdings
 
-def parse_13f_text(text_content: str) -> list[dict]:
+def parse_13f_hr(content: str, file_path_str: str) -> Optional[List[Dict[str, Any]]]:
     """
-    Parses the text content of a legacy Form 13F filing.
+    Dispatches 13F-HR parsing based on content.
+    Returns a list of holdings, an empty list if no holdings are found,
+    or None if the file is identified as a cover page without a data table.
     """
-    holdings = []
-    # Regex to find the start of the table data, looking for the header row.
-    table_header_regex = re.compile(r'NAME OF ISSUER\s+TITLE OF CLASS\s+CUSIP')
-    lines = text_content.splitlines()
+    stripped_content = content.strip()
+    # Check for XML declaration or root element of an information table
+    if stripped_content.startswith('<?xml') or stripped_content.lower().startswith('<informationtable'):
+        return _parse_13f_xml_infotable(content)
 
-    table_started = False
-    for line in lines:
-        if table_header_regex.search(line):
-            table_started = True
-            continue
-        
-        if table_started:
-            # Skip the separator line(s)
-            if '---' in line:
-                continue
-            # Stop at the end of the table
-            if '</TABLE>' in line or not line.strip():
-                break
-            
-            # Ensure the line has enough characters to avoid IndexError
-            if len(line) >= 116:
-                holding = {
-                    'name_of_issuer': line[0:25].strip(),
-                    'title_of_class': line[25:37].strip(),
-                    'cusip': line[37:49].strip(),
-                    'value_x1000': line[49:58].strip(),
-                    'shrs_or_prn_amt': line[58:67].strip(),
-                    'sh_prn_type': line[67:70].strip(),
-                    'put_call': line[70:74].strip(),
-                    'investment_discretion': line[74:83].strip(),
-                    'other_manager': line[83:89].strip(),
-                    'voting_auth_sole': line[89:98].strip(),
-                    'voting_auth_shared': line[98:107].strip(),
-                    'voting_auth_none': line[107:116].strip(),
-                }
-                holdings.append(holding)
-    return holdings
+    # Attempt to parse as HTML and find a text-based table
+    try:
+        root = html.fromstring(content.encode('utf-8'))
+        for element in root.xpath('//table | //pre'):
+            text = element.text_content()
+            if 'CUSIP' in text.upper() and 'VALUE' in text.upper():
+                return _parse_13f_text_table(text)
+    except etree.XMLSyntaxError:
+        # Fallback for content that isn't valid HTML.
+        # Use regex to find the table text, as the document may be malformed.
+        table_match = re.search(r'<TABLE>([\s\S]*?)<\/TABLE>', content, re.I)
+        if table_match:
+            table_text = table_match.group(1)
+            if 'CUSIP' in table_text.upper() and 'VALUE' in table_text.upper():
+                return _parse_13f_text_table(table_text)
+        # If no <TABLE> tag, try a broader search on the whole content
+        elif 'CUSIP' in content.upper() and 'VALUE' in content.upper():
+            return _parse_13f_text_table(content)
 
-if __name__ == '__main__':
-    # This block is for testing the parsers directly with the sample files.
-    # It will not run when main.py imports this module.
-    import json
+    # If no holdings table is found, check if it's just a cover page
+    upper_content = content.upper()
+    if 'FORM 13F COVER PAGE' in upper_content or 'FORM 13F SUMMARY PAGE' in upper_content:
+        return None  # Signal that this is a cover page, not a parsing failure
 
-    print("--- Testing Modern 13F XML Parser ---")
-    with open('sample_modern_13f.xml', 'r') as f:
-        xml_13f_content = f.read()
-    parsed_13f_xml = parse_13f_xml(xml_13f_content)
-    print(json.dumps(parsed_13f_xml, indent=2))
+    return []  # Return empty list if it's not a cover page but has no data
 
-    print("\n--- Testing Legacy 13F Text Parser ---")
-    with open('sample_legacy_13f.txt', 'r') as f:
-        text_13f_content = f.read()
-    parsed_13f_text = parse_13f_text(text_13f_content)
-    print(json.dumps(parsed_13f_text, indent=2))
+# --- Form 4 Parser ---
 
-    print("\n--- Testing Form 4 XML Parser ---")
-    with open('sample_form4.xml', 'r') as f:
-        xml_4_content = f.read()
-    parsed_form4 = parse_form4_xml(xml_4_content)
-    print(json.dumps(parsed_form4, indent=2))
+def parse_form4(content: str) -> List[Dict[str, Any]]:
+    """Parses a Form 4 or 4/A filing."""
+    try:
+        root = html.fromstring(content.encode('utf-8'))
+    except etree.XMLSyntaxError: return []
+
+    if root.xpath('.//nonderivativetransaction'):
+        transactions = []
+        base_info = {'issuer_ticker': root.findtext('.//issuer/issuertradingsymbol')}
+        for tx in root.findall('.//nonDerivativeTransaction'):
+            data = base_info.copy()
+            data.update({
+                'security_title': tx.findtext('.//securitytitle/value'),
+                'transaction_date': tx.findtext('.//transactiondate/value'),
+                'transaction_code': tx.findtext('.//transactioncoding/transactioncode'),
+                'shares_transacted': _clean_value(tx.findtext('.//transactionamounts/transactionshares/value')),
+                'price_per_share': _clean_value(tx.findtext('.//transactionamounts/transactionpricepershare/value')),
+                'shares_owned_after': _clean_value(tx.findtext('.//posttransactionamounts/sharesownedfollowingtransaction/value')),
+            })
+            transactions.append(data)
+        return transactions
+
+    transactions = []
+    issuer_ticker_match = re.search(r'Ticker or Trading Symbol.*\[\s*(.*?)\s*\]', content)
+    issuer_ticker = issuer_ticker_match.group(1) if issuer_ticker_match else None
+    table1 = root.xpath('//table[.//b[contains(text(), "Table I - Non-Derivative")]]')
+    if table1:
+        for row in table1[0].xpath('.//tr[count(td) > 7]'):
+            cells = row.xpath('.//td')
+            transactions.append({
+                'issuer_ticker': issuer_ticker,
+                'security_title': cells[0].text_content().strip(),
+                'transaction_date': cells[1].text_content().strip(),
+                'transaction_code': cells[3].text_content().strip(),
+                'shares_transacted': _clean_value(cells[5].text_content()),
+                'price_per_share': _clean_value(cells[7].text_content()),
+                'shares_owned_after': _clean_value(cells[8].text_content()),
+            })
+    return transactions
