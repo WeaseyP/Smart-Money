@@ -1,4 +1,4 @@
-﻿Dual-Signal 'Smart Money' Tracker: Implementation Guide
+Dual-Signal 'Smart Money' Tracker: Implementation Guide
 
 
 This document provides the canonical technical specification and implementation plan for the Dual-Signal 'Smart Money' Tracker project. It is structured into a series of epics and tasks, designed to guide the development process from initial setup through the creation of a Minimum Viable Product (MVP) and into future enhancement phases. The intended audience is the development team responsible for building, testing, and deploying the system.

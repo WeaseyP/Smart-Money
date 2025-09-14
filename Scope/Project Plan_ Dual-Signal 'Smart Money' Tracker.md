@@ -1,4 +1,4 @@
-﻿Project Plan: Dual-Signal 'Smart Money' Tracker
+Project Plan: Dual-Signal 'Smart Money' Tracker
 Strategic Foundation: The Dual-Signal 'Smart Money' Mandate
 This section establishes the strategic and theoretical underpinnings of the Dual-Signal 'Smart Money' Tracker. It defines the project's core objective, details the two-layered analytical approach, and articulates the investment thesis that drives the system's logic.
 Project Objective: Defining the Analytical Edge
@@ -51,7 +51,7 @@ The choice of a database is a critical architectural decision that will influenc
    4. Future-Proofing: Logical extensions for this project include building a web-based dashboard (using frameworks like Dash or Django) or developing more complex, concurrent analytical agents. The client-server architecture of PostgreSQL is the industry standard for such applications, providing robust user management, security features, and network accessibility that a file-based database like SQLite cannot offer.
 The selection of a database is not a minor technical implementation detail; it is a foundational choice that defines the system's operational limits and potential for expansion. By choosing PostgreSQL, the project is built upon a platform that is not only suitable for the initial prototype but is also capable of supporting significant future enhancements in complexity and scale. This early investment in a more robust architecture is a hallmark of professional-grade system design.
 Phase-by-Phase Execution Plan: From Simulator to Live Deployment
-This section provides a detailed, actionable roadmap for constructing the Dual-Signal 'Smart Money' Tracker. The project is broken down into logical phases, prioritizing the development of a functional, interactive simulator as the Minimum Viable Product (MVP) before moving to live data deployment.
+This section provides a detailed, actionable roadmap for constructing the Dual-Signal 'Smart Money' Tracker. The project is broken down into logical phases, prioritizing the development of a functional, interactive simulator as the Minimum Viable Product (MVP) before moving to live deployment.
 Phase 1: Core Engine and Historical Simulator (MVP)
 The primary goal of this initial phase is to build the core analysis logic and apply it within an interactive, command-line tool. This MVP will allow for the validation and refinement of the strategy using historical data, providing a tangible and testable product early in the development cycle.
 Step 1: Develop the Analysis Engine and Parsers
