@@ -25,7 +25,7 @@ def main():
     pd.set_option('display.width', 200)
 
     # Changed path to point to the sample filings for testing
-    root_path = Path("./sec_parser/sampled_filings")
+    root_path = Path("./sec_parser/parser_error")
 
     if not root_path.exists():
         print(f"Error: Directory not found at '{root_path.resolve()}'")
@@ -59,8 +59,15 @@ def main():
 
             if filing_type == "13F-HR":
                 raw_data = parsers.parse_13f_hr(processor.content, str(file_path))
+                
+                # The parser returns None for cover pages without data tables.
+                if raw_data is None:
+                    print(f"    - Skipped 13F-HR cover page (no data table found).")
+                    continue
+                
                 if not raw_data:
                     logging.warning(f"Parsed 0 holdings from 13F-HR file: {file_path.relative_to(root_path)}")
+
                 df = utils.normalize_13f_data(raw_data, metadata)
                 if not df.empty:
                     all_holdings.append(df)

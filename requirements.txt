@@ -5,3 +5,4 @@ sqlalchemy
 numpy
 requests
 python-dotenv
+lxml

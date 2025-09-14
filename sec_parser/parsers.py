@@ -14,19 +14,23 @@ def _parse_13f_text_table(table_text: str) -> List[Dict[str, Any]]:
     holdings = []
     lines = table_text.strip().split('\n')
     
-    separator_index = -1
+    header_index = -1
     for i, line in enumerate(lines):
-        if '----' in line and 'CUSIP' in lines[i-1]:
-            separator_index = i
+        upper_line = line.upper()
+        if 'CUSIP' in upper_line and ('VALUE' in upper_line or 'VOTING AUTHORITY' in upper_line):
+            header_index = i
             break
-    if separator_index == -1: return []
+    
+    if header_index == -1: return []
 
     # Regex to find a CUSIP and capture the text before and after.
     # CUSIPs are 9 chars, but can sometimes be 8 in older filings.
     cusip_regex = re.compile(r'\b([A-Z0-9]{8,9})\b')
     
-    for line in lines[separator_index + 1:]:
-        if not line.strip() or '<' in line or '---' in line: continue
+    # Start parsing from the line after the identified header.
+    for line in lines[header_index + 1:]:
+        # Skip empty lines, separators, or lines that look like tags.
+        if not line.strip() or '---' in line or '<' in line: continue
 
         match = cusip_regex.search(line)
         if not match: continue
@@ -72,11 +76,18 @@ def _parse_13f_xml_infotable(xml_content: str) -> List[Dict[str, Any]]:
         holdings.append({k: v.strip() if isinstance(v, str) else v for k, v in data.items()})
     return holdings
 
-def parse_13f_hr(content: str, file_path_str: str) -> List[Dict[str, Any]]:
-    """Dispatches 13F-HR parsing to the correct function based on content."""
-    if content.strip().startswith('<?xml'):
+def parse_13f_hr(content: str, file_path_str: str) -> Optional[List[Dict[str, Any]]]:
+    """
+    Dispatches 13F-HR parsing based on content.
+    Returns a list of holdings, an empty list if no holdings are found,
+    or None if the file is identified as a cover page without a data table.
+    """
+    stripped_content = content.strip()
+    # Check for XML declaration or root element of an information table
+    if stripped_content.startswith('<?xml') or stripped_content.lower().startswith('<informationtable'):
         return _parse_13f_xml_infotable(content)
-    
+
+    # Attempt to parse as HTML and find a text-based table
     try:
         root = html.fromstring(content.encode('utf-8'))
         for element in root.xpath('//table | //pre'):
@@ -84,9 +95,23 @@ def parse_13f_hr(content: str, file_path_str: str) -> List[Dict[str, Any]]:
             if 'CUSIP' in text.upper() and 'VALUE' in text.upper():
                 return _parse_13f_text_table(text)
     except etree.XMLSyntaxError:
-        if 'CUSIP' in content.upper() and 'VALUE' in content.upper():
+        # Fallback for content that isn't valid HTML.
+        # Use regex to find the table text, as the document may be malformed.
+        table_match = re.search(r'<TABLE>([\s\S]*?)<\/TABLE>', content, re.I)
+        if table_match:
+            table_text = table_match.group(1)
+            if 'CUSIP' in table_text.upper() and 'VALUE' in table_text.upper():
+                return _parse_13f_text_table(table_text)
+        # If no <TABLE> tag, try a broader search on the whole content
+        elif 'CUSIP' in content.upper() and 'VALUE' in content.upper():
             return _parse_13f_text_table(content)
-    return []
+
+    # If no holdings table is found, check if it's just a cover page
+    upper_content = content.upper()
+    if 'FORM 13F COVER PAGE' in upper_content or 'FORM 13F SUMMARY PAGE' in upper_content:
+        return None  # Signal that this is a cover page, not a parsing failure
+
+    return []  # Return empty list if it's not a cover page but has no data
 
 # --- Form 4 Parser ---
 

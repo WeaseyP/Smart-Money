@@ -52,8 +52,9 @@ class FileProcessor:
         if 'FORM 13F-HR' in upper_content: return '13F-HR'
 
         # Fallback for data-only XML files.
-        if self.content.strip().startswith('<?xml'):
-            if '<informationTable' in self.content:
+        stripped_content = self.content.strip()
+        if stripped_content.startswith('<?xml') or stripped_content.lower().startswith('<informationtable'):
+            if '<informationTable' in stripped_content or '<infotable' in stripped_content.lower():
                 return '13F-HR'
 
         return None
