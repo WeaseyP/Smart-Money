@@ -1,0 +1,61 @@
+<DOCUMENT>
+<TYPE>13F-HR
+<SEQUENCE>1
+<FILENAME>inftable.txt
+<TEXT>
+<TABLE>
+                                                                  FORM 13F INFORMATION TABLE
+                                                           VALUE   SHARES/  SH/ PUT/ INVSTMT    OTHER          VOTING AUTHORITY
+        NAME OF ISSUER          TITLE OF CLASS    CUSIP   (x$1000) PRN AMT  PRN CALL DSCRETN   MANAGERS     SOLE    SHARED    NONE
+------------------------------ ---------------- --------- -------- -------- --- ---- ------- ------------ -------- -------- --------
+<S>                            <C>              <C>       <C>      <C>      <C> <C>  <C>     <C>          <C>      <C>      <C>
+99 Cent Stores/ndn             COM              65440K106    70347  6725382 SH       SOLE                  6725382
+AES Inc./aes                   COM              00130H105    28618  1551118 SH       SOLE                  1551118
+American Tower A/amt           COM              029912201   250827  8059982 SH       SOLE                  8059982
+American Woodmark/amwd         COM              030506109    27601   787711 SH       SOLE                   787711
+Americredit/acf                COM              03060R101    66481  2381131 SH       SOLE                  2381131
+Bally Technologies/byi         COM              05874B107    37820  2296291 SH       SOLE                  2296291
+Bancshares of Florida/bofl     COM              05976u102     1100    50000 SH       SOLE                    50000
+Berkshire Hathaway A/brk.a     COM              084670108    10541      125 SH       SOLE                      125
+Berkshire Hathaway B/brk.b     COM              084670207     6189     2034 SH       SOLE                     2034
+Big 5 Sporting Goods Corp/bgfv COM              08915P101     2268   116300 SH       SOLE                   116300
+Boyd Gaming                    COM              103304101    13268   328743 SH       SOLE                   328743
+Bradley Pharmaceutical/bdy     COM              104576103     4299   421504 SH       SOLE                   421504
+Brown and Brown/bro            COM              115236101      730    25000 SH       SOLE                    25000
+CSX Corporation/csx            COM              126408103      670     9518 SH       SOLE                     9518
+CarMax Inc./kmx                COM              143130102    77371  2181923 SH       SOLE                  2181923
+DR Horton/dhi                  COM              23331A109    13498   566665 SH       SOLE                   566665
+Dover Motorsports, Inc./dvd    COM              260174107     4521   770260 SH       SOLE                   770260
+Dynamex Inc/ddmx               COM              26784F103    10142   464997 SH       SOLE                   464997
+Exxon Mobil/xom                COM              30231G102      523     8528 SH       SOLE                     8528
+Fed. Home Loan Mtg./fre        COM              313400301     4097    71873 SH       SOLE                    71873
+Global Imaging Systems/gisx    COM              3934A1004    22403   542700 SH       SOLE                   542700
+Goldman Sachs/gs               COM              38141G104     3357    22315 SH       SOLE                    22315
+Hilb, Rogal, & Hobbs/hrh       COM              431294107    22758   610614 SH       SOLE                   610614
+Int'l Gaming Tech/igt          COM              459902102    16689   439870 SH       SOLE                   439870
+Intl. Speedway A/isca          COM              460335201     9953   214647 SH       SOLE                   214647
+Intl. Speedway B/iscb          COM              460335300     7950   171328 SH       SOLE                   171328
+Investment Title Co/itic       COM              461804106     2698    61000 SH       SOLE                    61000
+Isle of Capri Casinos/isle     COM              464592104    18094   705427 SH       SOLE                   705427
+Mark West Hydro/mwp            COM              570762104     8959   361998 SH       SOLE                   361998
+Markel Corporation/mkl         COM              570535104   133891   385852 SH       SOLE                   385852
+Micros Systems Inc./mcrs       COM              594901100     1699    38900 SH       SOLE                    38900
+Monarch Casinos/mcri           COM              609027107    46944  1669433 SH       SOLE                  1669433
+O'Reilly Automotive/orly       COM              686091109    26263   842031 SH       SOLE                   842031
+Penn National Gaming/penn      COM              707569109   278109  7171457 SH       SOLE                  7171457
+Penn Virginia Corp/pva         COM              707882106     7400   105900 SH       SOLE                   105900
+Pinnacle Entertainment Inc./pn COM              723456109    69831  2278321 SH       SOLE                  2278321
+Progressive Insurance/pgr      COM              743315103      337    13124 SH       SOLE                    13124
+Quanta/qnta                    COM              G7313F106     1020   393842 SH       SOLE                   393842
+Shuffle Master/shfl            COM              825549108     2295    70000 SH       SOLE                    70000
+Simpson Manufacturing/ssd      COM              829073105    23531   652720 SH       SOLE                   652720
+Station Casinos/stn            COM              857689103    19112   280735 SH       SOLE                   280735
+Toll Brothers/tol              COM              889478103    15342   600000 SH       SOLE                   600000
+Wells Fargo/wfc                COM              949746101     4269    63642 SH       SOLE                    63642
+White River Cap/wrvc           COM              96445P105      451    28200 SH       SOLE                    28200
+ING Pref 6.125% 01/15/11       PFD              456837509     4558   200000 SH       SOLE                   200000
+Quanta Pfd 10.25 Series A      PFD              G7313F114     7669   411200 SH       SOLE                   411200
+Entertainment Properties Trust COM              29380T105      319     7400 SH       SOLE                     7400
+</TABLE>
+</TEXT>
+</DOCUMENT>

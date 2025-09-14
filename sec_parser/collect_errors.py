@@ -9,7 +9,7 @@ def main():
     and copies them into a 'parser_error' directory for easier review.
     """
     log_file = Path('../parser_issues.log')
-    source_root = Path('sampled_filings')
+    source_root = Path('raw_filings')
     dest_root = Path('parser_error')
     
     if not log_file.exists():

@@ -25,7 +25,7 @@ def main():
     pd.set_option('display.width', 200)
 
     # Changed path to point to the sample filings for testing
-    root_path = Path("./sec_parser/parser_error")
+    root_path = Path("./sec_parser/raw_filings")
 
     if not root_path.exists():
         print(f"Error: Directory not found at '{root_path.resolve()}'")

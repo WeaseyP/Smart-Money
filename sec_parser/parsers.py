@@ -1,6 +1,7 @@
 from lxml import etree, html
 import re
 from typing import List, Dict, Any, Optional
+import logging
 
 # --- Helper Functions ---
 def _clean_value(value: Optional[str]) -> Optional[str]:
@@ -10,51 +11,89 @@ def _clean_value(value: Optional[str]) -> Optional[str]:
 # --- 13F-HR Parser ---
 
 def _parse_13f_text_table(table_text: str) -> List[Dict[str, Any]]:
-    """Parses a pre-formatted text table using a CUSIP-anchored regex."""
+    """
+    Parses a pre-formatted text table by dynamically determining column positions
+    from the header, making it robust to spacing variations and multi-line headers.
+    """
     holdings = []
     lines = table_text.strip().split('\n')
-    
-    header_index = -1
+
+    # --- Header Detection Logic ---
+    header_block = []
+    data_start_index = -1
+    in_header = False
     for i, line in enumerate(lines):
         upper_line = line.upper()
-        if 'CUSIP' in upper_line and ('VALUE' in upper_line or 'VOTING AUTHORITY' in upper_line):
-            header_index = i
-            break
-    
-    if header_index == -1: return []
-
-    # Regex to find a CUSIP and capture the text before and after.
-    # CUSIPs are 9 chars, but can sometimes be 8 in older filings.
-    cusip_regex = re.compile(r'\b([A-Z0-9]{8,9})\b')
-    
-    # Start parsing from the line after the identified header.
-    for line in lines[header_index + 1:]:
-        # Skip empty lines, separators, or lines that look like tags.
-        if not line.strip() or '---' in line or '<' in line: continue
-
-        match = cusip_regex.search(line)
-        if not match: continue
-            
-        cusip = match.group(1)
-        # The issuer/title is everything before the CUSIP.
-        issuer_and_title = line[:match.start()].strip()
-        # The rest of the data is after the CUSIP.
-        other_cols_str = line[match.end():].strip()
+        is_header_keyword_line = any(kw in upper_line for kw in ['CUSIP', 'VALUE', 'ISSUER', 'SHARES', 'VOTING AUTHORITY'])
         
-        # Split the remaining columns by multiple spaces.
-        other_cols = re.split(r'\s{2,}', other_cols_str)
-        
-        # We expect at least value and shares.
-        if len(other_cols) < 2: continue
-            
+        if is_header_keyword_line and len(upper_line) < 200:
+            header_block.append(line)
+            in_header = True
+        elif in_header:
+            if '---' in line or re.search(r'^[<A-Z0-9]', line.strip()) or not line.strip():
+                data_start_index = i
+                break
+    
+    if not header_block:
+        logging.warning("Text table parser failed: Header block not found.")
+        return []
+
+    if data_start_index == -1:
+        data_start_index = len(header_block)
+
+    # --- Column Position Calculation ---
+    cusip_line_str = next((l for l in header_block if 'CUSIP' in l.upper()), header_block[-1])
+    value_line_str = next((l for l in header_block if 'VALUE' in l.upper()), header_block[-1])
+    shares_line_str = next((l for l in header_block if re.search('SHARES|SHRS|PRN AMT', l.upper())), cusip_line_str)
+
+    cusip_match = re.search(r'\bCUSIP\b', cusip_line_str, re.I)
+    value_match = re.search(r'\bVALUE\b', value_line_str, re.I)
+    shares_match = re.search(r'SHARES/|SHARES|SHRS\s+OR\s+PRN\s+AMT|PRN\s+AMT|SHRSORPRNAMT|SH\b', shares_line_str, re.I)
+
+    if not all([cusip_match, value_match, shares_match]):
+        logging.warning(f"Text table parser failed: Essential columns not found in header. CUSIP:{bool(cusip_match)}, VALUE:{bool(value_match)}, SHARES:{bool(shares_match)}.")
+        return []
+
+    pos = {
+        'nameOfIssuer_end': cusip_match.start(),
+        'cusip_start': cusip_match.start(),
+        'cusip_end': value_match.start(),
+        'value_start': value_match.start(),
+        'value_end': shares_match.start(),
+        'shares_start': shares_match.start(),
+    }
+
+    next_col_match = re.search(r'\b(SH|PUT|CALL|INVESTMENT|DISCRETION|SOLE)\b', cusip_line_str[pos['shares_start']+1:], re.I)
+    if next_col_match:
+        pos['shares_end'] = pos['shares_start'] + next_col_match.start()
+    else:
+        pos['shares_end'] = pos['shares_start'] + 15
+
+    if data_start_index < len(lines) and '---' in lines[data_start_index]:
+        data_start_index += 1
+
+    # --- Data Line Parsing ---
+    for line in lines[data_start_index:]:
+        if len(line.strip()) < 20 or '---' in line or re.fullmatch(r'<[A-Z]>', line.strip()):
+            continue
+
+        name_of_issuer = line[:pos['nameOfIssuer_end']].strip()
+        cusip = line[pos['cusip_start']:pos['cusip_end']].strip()
+        value = line[pos['value_start']:pos['value_end']].strip()
+        shares = line[pos['shares_start']:pos['shares_end']].strip()
+
+        if not name_of_issuer or not re.match(r'^[A-Z0-9]{8,9}$', cusip, re.I):
+            logging.warning(f"Skipping row due to invalid data. Raw line: '{line.strip()}'")
+            continue
+
         holding = {
-            'nameOfIssuer': issuer_and_title,
+            'nameOfIssuer': name_of_issuer,
             'cusip': cusip,
-            'value': _clean_value(other_cols[0]),
-            'sshPrnamt': _clean_value(other_cols[1]),
+            'value': _clean_value(value),
+            'sshPrnamt': _clean_value(shares),
         }
         holdings.append(holding)
-            
+
     return holdings
 
 def _parse_13f_xml_infotable(xml_content: str) -> List[Dict[str, Any]]:
