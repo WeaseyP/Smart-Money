@@ -12,10 +12,11 @@ def _clean_value(value: Optional[str]) -> Optional[str]:
 
 def _parse_13f_text_table(table_text: str) -> List[Dict[str, Any]]:
     """
-    Parses a pre-formatted text table by dynamically determining column positions
-    from the header, making it robust to spacing variations and multi-line headers.
+    Parses a pre-formatted text table, robust to spacing and multi-line entries.
+    Returns a list of raw holding data, including continuations, for later aggregation.
     """
     holdings = []
+    last_cusip = None
     lines = table_text.strip().split('\n')
 
     # --- Header Detection Logic ---
@@ -81,19 +82,31 @@ def _parse_13f_text_table(table_text: str) -> List[Dict[str, Any]]:
         cusip = line[pos['cusip_start']:pos['cusip_end']].strip()
         value = line[pos['value_start']:pos['value_end']].strip()
         shares = line[pos['shares_start']:pos['shares_end']].strip()
+        
+        cleaned_shares = re.sub(r'[^0-9]', '', shares)
 
-        if not name_of_issuer or not re.match(r'^[A-Z0-9]{8,9}$', cusip, re.I):
-            logging.warning(f"Skipping row due to invalid data. Raw line: '{line.strip()}'")
+        is_continuation = not name_of_issuer and not cusip and (value or cleaned_shares)
+        
+        current_cusip = cusip if re.match(r'^[A-Z0-9]{8,9}$', cusip, re.I) else None
+        
+        if not current_cusip and is_continuation and last_cusip:
+            current_cusip = last_cusip
+        
+        if not current_cusip:
+            if name_of_issuer:
+                logging.warning(f"Skipping row with issuer but invalid CUSIP. Raw line: '{line.strip()}'")
             continue
-
+        
+        last_cusip = current_cusip
+            
         holding = {
             'nameOfIssuer': name_of_issuer,
-            'cusip': cusip,
+            'cusip': current_cusip,
             'value': _clean_value(value),
-            'sshPrnamt': _clean_value(shares),
+            'sshPrnamt': cleaned_shares,
         }
         holdings.append(holding)
-
+            
     return holdings
 
 def _parse_13f_xml_infotable(xml_content: str) -> List[Dict[str, Any]]:
@@ -117,7 +130,8 @@ def _parse_13f_xml_infotable(xml_content: str) -> List[Dict[str, Any]]:
 
 def parse_13f_hr(content: str, file_path_str: str) -> Optional[List[Dict[str, Any]]]:
     """
-    Dispatches 13F-HR parsing based on content.
+    Dispatches 13F-HR parsing based on content. It handles multiple tables within a
+    single document and aggregates holdings by CUSIP across all tables.
     Returns a list of holdings, an empty list if no holdings are found,
     or None if the file is identified as a cover page without a data table.
     """
@@ -126,31 +140,58 @@ def parse_13f_hr(content: str, file_path_str: str) -> Optional[List[Dict[str, An
     if stripped_content.startswith('<?xml') or stripped_content.lower().startswith('<informationtable'):
         return _parse_13f_xml_infotable(content)
 
-    # Attempt to parse as HTML and find a text-based table
+    all_holdings_raw = []
+    found_table = False
+
+    # Attempt to parse as HTML and find all text-based tables
     try:
         root = html.fromstring(content.encode('utf-8'))
         for element in root.xpath('//table | //pre'):
             text = element.text_content()
             if 'CUSIP' in text.upper() and 'VALUE' in text.upper():
-                return _parse_13f_text_table(text)
+                found_table = True
+                parsed_holdings = _parse_13f_text_table(text)
+                if parsed_holdings:
+                    all_holdings_raw.extend(parsed_holdings)
     except etree.XMLSyntaxError:
-        # Fallback for content that isn't valid HTML.
-        # Use regex to find the table text, as the document may be malformed.
+        # Fallback for content that isn't valid HTML. This will only find the first table.
         table_match = re.search(r'<TABLE>([\s\S]*?)<\/TABLE>', content, re.I)
         if table_match:
             table_text = table_match.group(1)
             if 'CUSIP' in table_text.upper() and 'VALUE' in table_text.upper():
-                return _parse_13f_text_table(table_text)
+                found_table = True
+                all_holdings_raw.extend(_parse_13f_text_table(table_text))
         # If no <TABLE> tag, try a broader search on the whole content
         elif 'CUSIP' in content.upper() and 'VALUE' in content.upper():
-            return _parse_13f_text_table(content)
+            found_table = True
+            all_holdings_raw.extend(_parse_13f_text_table(content))
 
-    # If no holdings table is found, check if it's just a cover page
-    upper_content = content.upper()
-    if 'FORM 13F COVER PAGE' in upper_content or 'FORM 13F SUMMARY PAGE' in upper_content:
-        return None  # Signal that this is a cover page, not a parsing failure
+    if not found_table:
+        upper_content = content.upper()
+        if 'FORM 13F COVER PAGE' in upper_content or 'FORM 13F SUMMARY PAGE' in upper_content:
+            return None
+        return []
 
-    return []  # Return empty list if it's not a cover page but has no data
+    # Aggregate holdings across all tables by CUSIP
+    final_aggregated_holdings = {}
+    for holding in all_holdings_raw:
+        cusip = holding.get('cusip')
+        if not cusip: continue
+
+        if cusip in final_aggregated_holdings:
+            existing = final_aggregated_holdings[cusip]
+            new_value = holding.get('value')
+            if new_value:
+                existing['value'] = str(int(existing.get('value') or 0) + int(new_value or 0))
+            new_shares = holding.get('sshPrnamt')
+            if new_shares:
+                existing['sshPrnamt'] = str(int(existing.get('sshPrnamt') or 0) + int(new_shares or 0))
+            if not existing.get('nameOfIssuer') and holding.get('nameOfIssuer'):
+                existing['nameOfIssuer'] = holding['nameOfIssuer']
+        else:
+            final_aggregated_holdings[cusip] = holding.copy()
+            
+    return list(final_aggregated_holdings.values())
 
 # --- Form 4 Parser ---
 
